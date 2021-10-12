@@ -1,0 +1,24 @@
+Alphabet:
+	ascii characters
+Lexic:
+	a. Special symbols representing:
+		-operators: '+', '-', '*', '/', '=', "**", '<', '>', "<=", "=>", "==", "!=", '%', '!', "&&", "||", "^^"
+		-separators: '(', ')', '[', ']', '{', '}', ';', ',', '.'
+		-reserved words: if, else, while, for, return, int, float, char, string, bool, const, define
+	b. Identifiers
+		identifier =  lowercase_letter {lowercase_letter | uppercase_letter}
+		lowercase_letter = 'a' | ... | 'z'
+		uppercase_letter = 'A' | ... | 'Z'
+	c. Constants
+		-Integers:
+			integer = 0 | [+|-]non_zero_digit{digit}
+			digit = 0|...|9
+			non_zero_digit = 1|...|9
+		-Character:
+			character = (ascii_character)
+		-String:
+			string = character | character{string}
+		-Float:
+			[-|+]digit{digit} [.digit{digit}]
+		-Bool:
+			bool = true | false

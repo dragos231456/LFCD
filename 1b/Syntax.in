@@ -1,0 +1,23 @@
+program = "{" [compound_statement] "}"
+compound_statement = statement | statement {compound_statement}
+statement = declaration_statement | assignment_statement | define_type_statement | 
+	while_statement | for_statement | if_statement | print_statement | read_statement
+declaratation_statement = type identifier{"["positive_number"]"}
+assignment_statement = identifier "=" expression
+while_statement = "while" "(" boolean_expression ")" program
+for_statement = "for" "(" identifier ";" boolean_expression ";" expression ")" program
+if_statement = "if" "(" boolean_expresion ")" program ["else" program]
+print_statement = "print" "(" expression ")"
+read_statement = "read" "(" identifier ")"
+
+expression = arithmetic_expression | boolean_expression
+arithmentic_expression = ["-"] "(" identifier | arithmentic_expression binary_operator arithmetic_expression ")"
+boolean_expression = [!] "(" identifier | boolean_expression relational_operator boolean_expresion ")"
+
+type = "int" | "float" | "char" | "string"
+
+binary_operator = "+" | "-" | "*" | "**" | "/" | "&&" | "||" | "^^"
+
+relational_operator = "<" | ">" | "<=" | ">=" | "==" | "!=" | "&&" | "||"
+
+positive_number = ["+"] 0 | non_zero_digit{digit}

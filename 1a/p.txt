@@ -1,0 +1,59 @@
+//p1
+
+decl a = read(int)
+decl b = read(int)
+decl c = read(int)
+
+if (a > b)
+	if (c > a)
+		display(c)
+	display(a)
+else
+	if (c > b)
+		display(c)
+	display(b)
+
+--------------------------
+//p2
+
+decl x = read(int)
+decl i = 2
+
+while(i < x)
+	if(x % i == 0) 
+		display("notPrime")
+		i = x
+	i += 1
+
+if(i == x)
+	display("Prime")
+
+-----------------------------------
+//p3
+
+decl n = read(int)
+decl x
+decl mn = 999999999
+
+for(decl i = 0;i < n; i += 1) 
+	x = read(int)
+	if(x < mn)
+		mn = x
+
+display(mn)
+
+-----------------------------------
+//p1err
+	
+decl 2x = read(int)
+decl i = 2
+
+while(i < x)
+	if(x % i == 0) 
+		display("notPrime')
+		i = x
+	i += 1
+
+if(i == x)
+	display("Prime")
+
