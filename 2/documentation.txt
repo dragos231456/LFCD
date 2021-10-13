@@ -1,0 +1,11 @@
+https://github.com/dragos231456/LFCD
+
+SymbolTable implemented on a hash-map
+The Hash Map is esentially a list of m lists, where m is set from the start by the program.
+The hash function is the result of the sum of the identifier's characters' ascii values, modulo m
+
+The add method in the Symbol Table gets as parameter the identifier and returns it's position in the
+symbol table (as a tuple)
+We hash the identifier, get the corresponding position and check if the identifier already
+exists in the list of the obtained position. If it does, we return the position, but if not,
+we add a new position at the end of the list

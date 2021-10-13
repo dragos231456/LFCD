@@ -17,7 +17,8 @@ Lexic:
 		-Character:
 			character = (ascii_character)
 		-String:
-			string = character | character{string}
+			constchar = "string"
+			string = character{string}
 		-Float:
 			[-|+]digit{digit} [.digit{digit}]
 		-Bool:
