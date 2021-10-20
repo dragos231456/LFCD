@@ -1,59 +1,81 @@
 //p1
+{
+  int a; 
+  int b;  
+  int c;
+  read(a);
+  read(b);
+  read(c);
 
-decl a = read(int)
-decl b = read(int)
-decl c = read(int)
-
-if (a > b)
-	if (c > a)
-		display(c)
-	display(a)
-else
-	if (c > b)
-		display(c)
-	display(b)
-
+  if (a > b) {
+       	  if (c > a) {
+		  print(c);
+          }
+	  else {
+            print(a)
+ 	  }
+  }
+  else {
+	  if (c > b) {
+		  print(c);
+          }
+	  else {
+            print(b)
+          }
+  }
+}
 --------------------------
 //p2
+{
+ int x;
+ read(x);
+ int i;
+ i =2;
 
-decl x = read(int)
-decl i = 2
+  while(i < x) {
+   	  if(x % i == 0) {
+		  print("notPrime")'
+		  i = x'
+          }
+	  i = i + 1'
 
-while(i < x)
-	if(x % i == 0) 
-		display("notPrime")
-		i = x
-	i += 1
-
-if(i == x)
-	display("Prime")
-
+  if(i == x) {
+	  print("Prime")'
+  }
+  }
+}
 -----------------------------------
 //p3
-
-decl n = read(int)
-decl x
-decl mn = 999999999
-
-for(decl i = 0;i < n; i += 1) 
-	x = read(int)
-	if(x < mn)
-		mn = x
-
-display(mn)
-
+{
+  int n;
+  int x;
+  int mn;
+  read(n);
+  mn = 999999;
+  for(i = 0;i < n; i=i+1) {
+	read(x);
+	if(x < mn) {
+	     mn = x;
+        }
+  }
+ print(mn);
+}
 -----------------------------------
 //p1err
-	
-decl 2x = read(int)
-decl i = 2
+{
+  int 2x;
+  int i;
+  i = 2;
 
-while(i < x)
-	if(x % i == 0) 
-		display("notPrime')
-		i = x
-	i += 1
+  while(i < x) {
+   if(x % i == 0) {
+	print("notPrime');
+	i = x;
+        }
+    i = i + 1;
 
-if(i == x)
-	display("Prime")
-
+    if(i == x) {
+	print("Prime");
+    }
+  }
+}

@@ -18,22 +18,14 @@ class SymbolTable():
     def hash(self, entry):
         return self.toAscii(entry.identifier) % self.m
             
-    def add(self, entry):
+    def add(self, identifier):
+        entry = Entry(identifier)
         pos = self.hash(entry)
         for i in range(len(self.slla[pos])):
             if self.slla[pos][i].identifier == entry.identifier:
-                return (pos, i)
+                return pos, i
         i = len(self.slla[pos])
         self.slla[pos].append(entry)
-        return (pos, i)
+        return pos, i
 
-st = SymbolTable()
-e1 = Entry("a")
-e2 = Entry("b")
-e3 = Entry("a")
-e4 = Entry("2")
 
-print(st.add(e1))
-print(st.add(e2))
-print(st.add(e3))
-print(st.add(e4))      

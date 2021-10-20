@@ -1,8 +1,8 @@
 program = "{" [compound_statement] "}"
 compound_statement = statement | statement {compound_statement}
 statement = declaration_statement | assignment_statement | define_type_statement | 
-	while_statement | for_statement | if_statement | print_statement | read_statement
-declaratation_statement = type identifier{"["positive_number"]"}
+	while_statement | for_statement | if_statement | print_statement | read_statement ;
+declaratation_statement = type identifier
 assignment_statement = identifier "=" expression
 while_statement = "while" "(" boolean_expression ")" program
 for_statement = "for" "(" identifier ";" boolean_expression ";" expression ")" program
@@ -10,14 +10,25 @@ if_statement = "if" "(" boolean_expresion ")" program ["else" program]
 print_statement = "print" "(" expression ")"
 read_statement = "read" "(" identifier ")"
 
-expression = arithmetic_expression | boolean_expression
-arithmentic_expression = ["-"] "(" identifier | arithmentic_expression binary_operator arithmetic_expression ")"
-boolean_expression = [!] "(" identifier | boolean_expression relational_operator boolean_expresion ")"
+expression = arithmetic_expression | relational_expression
+
+arithmetic_expression = ["-"] (arithmetic_expression binary_operator a_term | a_term)
+a_term = a_term binary_operator a_factor | a_factor
+a_factor = "(" arithmetic_expression ")" | identifier | number | string
+
+relational_expression = ["!"] (relational_expression relational_operator r_term | r_term)
+r_term = r_term relational_operator r_factor | r_factor
+r_factor = "(" relational_expression ")" | identifier | boolean_constant | string 
+
+boolean_constant = "True" | "False"
 
 type = "int" | "float" | "char" | "string"
 
-binary_operator = "+" | "-" | "*" | "**" | "/" | "&&" | "||" | "^^"
+binary_operator = "+" | "-" | "*" | "**" | "/" | "&&" | "||" | "^^" | "%" 
 
 relational_operator = "<" | ">" | "<=" | ">=" | "==" | "!=" | "&&" | "||"
 
-positive_number = ["+"] 0 | non_zero_digit{digit}
+number = non_negative_number | negative_number
+
+non_negative_number = ["+"] 0 | non_zero_digit{digit}
+negative_number = - non_zero_digit{digit}
