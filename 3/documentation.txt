@@ -1,0 +1,50 @@
+https://github.com/dragos231456/LFCD
+
+The Scanner class has as it's members the following:
+-list of tokens(read from the file passed as constructor parameter)
+-a symbol table instance
+-list to store the possible lexical errors
+-access to the PIF and ST file
+
+methods:
+-loadTokens:
+ pre: the name of the file where the token are stored
+ post: the tokens from the file are loaded in memory
+
+-scan:
+ pre: name of the file that contains the code to be analyzed
+ post: "Lexically correct" or list of errors
+ the scan method loads the lines of the program, each line is scanned separately in the parse method
+ after the scan, the st file is populated with the Symbol Table entries, and return the final message
+
+-parse:
+ pre: a line of code
+ post: the line is lexically analyzed
+ the parse method gets from the line each atom using detectToken. Then, it checks if the atom is a token, constant or identifier
+ if it's a token, it adds an entry in PIF file, if it's identifier or constant it adds an entry both in PIF and in Symbol Table
+ if it's none of the above, it's a lexical error that we store in the errors list
+
+-detectToken:
+ pre: line to search the atom into + offset
+ post: the next token or '' if there are no tokens left in the line
+ first the method get rids of leading whitespaces. then it parses until it meets a new whitespace, the chars contained between two consecutive whitespace sequences
+ form an atom. An exceptions occurs when the atom is a string/char constant. That is when we keep track of open quotes and read till we find a matching one or the line ends
+
+-isEmptyChar:
+ pre: char
+ post: checks if a char is either a space, tab or newline
+
+-writeToPIF:
+ takes a token and an index and writes it as an entry in the PIF file
+
+-writeToST:
+ writes each Symbol Table entry along with it's position in the st file
+
+-identifierOrConstant:
+  pre: atom
+  post: returns if the passed atom is an identifier or a constant
+  if it's none of them, it returns an emtpy string
+
+-addError:
+ pre: token and it's line index
+ add a new error to the error list

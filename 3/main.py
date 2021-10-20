@@ -38,8 +38,17 @@ class Scanner():
         return [token, index]
 
     def writeToPIF(self, token, index):
-        line = token + "-" + str(index) + '\n'
+        line = token + " " + str(index) + '\n'
         self.pifFile.write(line)
+
+    def writeToST(self):
+        i = 0
+        for lst in self.ST.slla:
+            j = 0
+            for entry in lst:
+                self.stFile.write(entry.identifier + " " + str([i, j]) + '\n')
+                j += 1
+            i += 1
 
     def identifierOrConstant(self, token):
         patterns = {"integer": r'[-+]?[0-9]+',
@@ -76,7 +85,7 @@ class Scanner():
                 [isIDorC, type] = self.identifierOrConstant(token)
                 if isIDorC:
                     stIndex = self.ST.add(token)
-                    self.writeToPIF(token, stIndex)
+                    self.writeToPIF(type, stIndex)
                 else:
                     self.addError(token, lineIndex)
 
@@ -90,6 +99,8 @@ class Scanner():
             lineIndex += 1
             self.parse(line, lineIndex)
 
+        self.writeToST()
+
         self.pifFile.close()
         self.stFile.close()
 
@@ -101,14 +112,5 @@ class Scanner():
 
 
 if __name__ == '__main__':
-    scanner = Scanner('token.txt')
-    scanner.scan('p1.txt')
-
-    scanner = Scanner('token.txt')
-    scanner.scan('p2.txt')
-
-    scanner = Scanner('token.txt')
-    scanner.scan('p3.txt')
-
     scanner = Scanner('token.txt')
     scanner.scan('p1err.txt')
