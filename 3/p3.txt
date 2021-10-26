@@ -1,14 +1,14 @@
 {
-  int n ;
-  int x ;
-  int mn ;
-  read ( n ) ;
-  mn = 999999 ;
-  for ( i = 0 ; i < n ; i = i + 1 ) {
-	read ( x ) ;
-	if ( x < mn ) {
-	     mn = x ;
+  int n;
+  int x;
+  int mn;
+  read(n);
+  mn=999999;
+  for(i=0;i<n;i=i+1) {
+	read(x);
+	if(x<mn) {
+	     mn=x;
         }
   }
- print ( mn ) ;
+ print(mn);
 }

@@ -22,6 +22,40 @@ class Scanner():
     def isEmptyChar(self, char):
         return char == ' ' or char == '\n' or ord(char) == 9
 
+    def expandLine(self, line):
+        quotesOpen = False
+        quoteOpen = False
+        newLine = ''
+        fbEqual = ['>', '<', '!', '=']
+        repeated = ['|', '&', '^']
+        for i in range(len(line)):
+            addSpace = False
+            newLine += line[i]
+            if line[i] in fbEqual:
+                if i + 1 < len(line) and line[i+1] != '=':
+                    addSpace = True
+            elif line[i] in repeated:
+                if i + 1 < len(line) and line[i+1] != line[i]:
+                    addSpace = True
+            elif line[i] == "'":
+                quoteOpen = not quoteOpen
+                print(quoteOpen)
+                addSpace = True
+            elif line[i] == '"':
+                quotesOpen = not quotesOpen
+                addSpace = True
+            elif not (line[i].isalpha() or line[i].isnumeric()):
+                addSpace = True
+            else:
+                if i + 1 < len(line) and not (line[i+1].isalpha() or line[i+1].isnumeric()):
+                    addSpace = True
+
+            if addSpace and (not quotesOpen) and (not quoteOpen):
+                newLine += ' '
+
+        #print(newLine)
+        return newLine
+
     def detectToken(self, line, index):
         token = ''
         isQuoteOpen = False
@@ -97,7 +131,8 @@ class Scanner():
         lineIndex = 0
         for line in self.lines:
             lineIndex += 1
-            self.parse(line, lineIndex)
+            expandedLine = self.expandLine(line)
+            self.parse(expandedLine, lineIndex)
 
         self.writeToST()
 
@@ -113,4 +148,4 @@ class Scanner():
 
 if __name__ == '__main__':
     scanner = Scanner('token.txt')
-    scanner.scan('p1err.txt')
+    scanner.scan('p2.txt')

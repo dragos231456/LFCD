@@ -30,6 +30,9 @@ methods:
  first the method get rids of leading whitespaces. then it parses until it meets a new whitespace, the chars contained between two consecutive whitespace sequences
  form an atom. An exceptions occurs when the atom is a string/char constant. That is when we keep track of open quotes and read till we find a matching one or the line ends
 
+-expandLine:
+ adds a space after what appears to be an end of an identifier in order to easily parse them afterwards
+
 -isEmptyChar:
  pre: char
  post: checks if a char is either a space, tab or newline

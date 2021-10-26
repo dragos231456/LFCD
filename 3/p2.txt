@@ -1,18 +1,15 @@
 {
- int x ;
- read ( x ) ;
- int i ;
- i = 2 ;
-
-  while ( i < x ) {
-   	  if ( x % i == 0 ) {
-		  print ( "not Prime" ) ;
-		  i = x ;
+ int x;
+ read(x);
+ int i;
+ i=2;
+  while(i<x) {
+   	  if(x%i==0) {
+		  print("not Prime");
+		  i=x;
           }
-	  i = i + 1 ;
-
-  if ( i == x ) {
-	  print ( "Prime" )
-  }
-  }
+	  i=i+1;
+  if(i==x){
+	  print("Prime")}
+	  }
 }

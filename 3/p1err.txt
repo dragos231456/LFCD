@@ -1,17 +1,17 @@
 {
-  int 2x ;
-  int i ;
-  i = 2 ;
+  int 2x;
+  int i;
+  i=2;
 
-  while ( i < x ) {
-   if ( x % i == 0 ) {
-	print ( "not Prime' ) ;
-	i = x ;
+  while(i<x) {
+   if(x%i==0){
+	print("not Prime');
+	i=x;
         }
-    i = i + 1 ;
+    i=i+1;
 
-    if ( i == x ) {
-	print ( "Prime" ) ;
+    if(i==x) {
+	print("Prime");
     }
   }
 }
