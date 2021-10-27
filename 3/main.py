@@ -148,4 +148,4 @@ class Scanner():
 
 if __name__ == '__main__':
     scanner = Scanner('token.txt')
-    scanner.scan('p2.txt')
+    scanner.scan('p1err.txt')

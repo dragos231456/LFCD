@@ -6,6 +6,9 @@ The Scanner class has as it's members the following:
 -list to store the possible lexical errors
 -access to the PIF and ST file
 
+PIF:
+- array of pairs
+
 methods:
 -loadTokens:
  pre: the name of the file where the token are stored
@@ -51,3 +54,12 @@ methods:
 -addError:
  pre: token and it's line index
  add a new error to the error list
+
+REGEXes used:
+[-+]?[0-9]+ : plus or minus sign (optionally) followed by digits any number of times
+[-+]?\d*\.\d+|\d+: plus or minus sign (optionally) followed by 2 numbers separated by a dot('.') or simply just a number
+".*?": 2 double quotes with any string in between ( stops at the second double quotes found)
+'.': any char between quotes
+[a-z][a-zA-Z]*: any string of uppercase and lowercase letter when the first letter is always lowercase
+True|False: Either True or False
+
