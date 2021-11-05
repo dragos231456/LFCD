@@ -1,0 +1,36 @@
+https://github.com/dragos231456/LFCD
+
+FALoader class is the main class for the task
+it has as it's members the 5-tuple typical for any FA: alphabet, states, initial state, final states and transitions
+as methods, there is:
+
+loadFromFile:
+    gets as parameter the filepath and loads into memory the FA from that file
+
+verifySequence:
+    verifies if a sequence passed as parameter is accepted by the FA
+
+displayMenu:
+   show available commands
+
+runMenu:
+   take user input and execute the corresponding command
+
+setters for the 5-tuple that take as parameter a string or a list of strings, parse the string and get the relevant data
+
+file = alphabet
+       states
+       initialState
+       finalStates
+       transitions
+
+alphabet = {transition }
+states = letter {letter }
+initialState = letter
+finalStates = letter {letter }
+transitions = {letter transition letter \n}
+
+letter = 'A' | ... | 'Z'
+non_zero_digit = 1 | ... | 9
+digit = 0 | non_zero_digit
+transition = 0 | non_zero_digit{digit}

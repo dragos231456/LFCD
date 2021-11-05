@@ -1,6 +1,7 @@
 # noinspection PyRedundantParentheses,PyAttributeOutsideInit
 from symbolTable import SymbolTable
 import re
+from fa import FALoader
 
 
 class Scanner():
@@ -11,6 +12,10 @@ class Scanner():
         self.loadTokens(tokenFile)
         self.ST = SymbolTable()
         self.stFile = open("ST.out", 'w')
+        self.identifierFA = FALoader()
+        self.identifierFA.loadFromFile('fa-identifier.in')
+        self.integerConstantFA = FALoader()
+        self.integerConstantFA.loadFromFile('fa-integer-constant.in')
 
     def loadTokens(self, tokenFile):
         file = open(tokenFile, 'r')
@@ -39,7 +44,6 @@ class Scanner():
                     addSpace = True
             elif line[i] == "'":
                 quoteOpen = not quoteOpen
-                print(quoteOpen)
                 addSpace = True
             elif line[i] == '"':
                 quotesOpen = not quotesOpen
@@ -84,23 +88,28 @@ class Scanner():
                 j += 1
             i += 1
 
+    def FAidentifierOrConstant(self, token):
+        if self.identifierFA.verifySequence(token):
+            return 'identifier'
+        if self.integerConstantFA.verifySequence(token):
+            return 'constant'
+        return ''
+
     def identifierOrConstant(self, token):
-        patterns = {"integer": r'[-+]?[0-9]+',
+        patterns = {#"integer": r'[-+]?[0-9]+',
                     "float": r'[-+]?\d*\.\d+|\d+',
                     "string": r'".*?"',
                     "character": r"'.'",
-                    "identifier": r'[a-z][a-zA-Z]*',
+                    #"identifier": r'[a-z][a-zA-Z]*',
                     "bool": r'True|False'}
 
         for pattern in patterns.keys():
             x = re.findall(patterns[pattern], token)
 
             if len(x) != 0 and x[0] == token:
-                if pattern == 'identifier':
-                    return [True, pattern]
-                else:
-                    return [True, 'constant']
-        return [False, '']
+                return 'constant'
+
+        return self.FAidentifierOrConstant(token)
 
     def addError(self, token, lineIndex):
         self.errors.append("Line " + str(lineIndex) + ": Undefined token: " + token)
@@ -116,8 +125,8 @@ class Scanner():
             if token in self.tokens:
                 self.writeToPIF(token, 0)
             else:
-                [isIDorC, type] = self.identifierOrConstant(token)
-                if isIDorC:
+                type = self.identifierOrConstant(token)
+                if type == 'identifier' or type == 'constant':
                     stIndex = self.ST.add(token)
                     self.writeToPIF(type, stIndex)
                 else:
