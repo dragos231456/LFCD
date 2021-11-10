@@ -56,7 +56,7 @@ class FALoader():
             if not exist:
                 return False
             x = y
-        return True
+        return x in self.finalStates
 
     def showMenu(self):
         print('\033[93m' + "0: exit" + '\033[0m')
