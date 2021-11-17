@@ -1,0 +1,6 @@
+S A B
+a b
+S
+S -> aB | bA
+A -> a | aS | bAA
+B -> b | bS | aBB
