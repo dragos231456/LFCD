@@ -1,0 +1,33 @@
+program compound_statement statement declaration_statement assignment_statement while_statement for_statement if_statement print_statement read_statement expression arithmetic_expression a_term a_factor relational_expression r_term r_factor boolean_constant type binary_operator relational_operator number unsigned_number digit non_zero_digit digit_string identifier lowercase_letter letter
++ - * / = ** < > <= => == != % ! and or ( ) [ ] { } ; if else while for int float char string bool read print a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+program
+program -> { compound_statement }
+compound_statement -> statement | statement compound_statement
+statement -> declaration_statement | assignment_statement | define_type_statement | while_statement | for_statement | if_statement | print_statement | read_statement
+declaration_statement -> type identifier ;
+assignment_statement -> identifier = expression ;
+while_statement -> while ( relational_expression ) program
+for_statement -> for ( identifier ; relational_expression ; expression ) program
+if_statement -> if ( relational_expression ) program | if ( relational_expression ) program else program
+print_statement -> print ( expression ) ;
+read_statement -> read ( identifier ) ;
+expression -> arithmetic_expression | relational_expression
+arithmetic_expression -> - arithmetic_expression | arithmetic_expression binary_operator a_term | a_term
+a_term -> a_term binary_operator a_factor | a_factor
+a_factor -> ( arithmetic_expression ) | identifier | number
+relational_expression -> ! relational_expression | relational_expression relational_operator r_term | r_term
+r_term -> r_term relational_operator r_factor| r_factor
+r_factor -> ( relational_expression ) | identifier | boolean_constant
+boolean_constant -> True | False
+type -> int | float | char | string | bool
+binary_operator -> + | - | * | / | ** | %
+relational_operator -> < | > | <= | >= | == | != | and | or
+number -> + unsigned_number| - unsigned_number | unsigned_number
+unsigned_number -> digit | non_zero_digit digit_string
+digit -> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+non_zero_digit -> 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+digit_string -> digit | digit digit_string
+identifier -> lowercase_letter | lowercase_letter letter_string
+letter_string -> letter | letter letter_string
+lowercase_letter -> a | b | c | d | e | f | g | h | i | j | k | l | m | n | o | p | q | r | s | t | u | v | w | x | y | z
+letter -> lowercase_letter | A | B | C | D | E | F | G | H | I | J | K | L | M | N | O | P | Q | R | S | T | U | V | W | X | Y | Z
