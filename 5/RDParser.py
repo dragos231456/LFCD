@@ -91,74 +91,18 @@ class RDParser:
             return True, self.build_string_of_productions(config.work_stack)
                             
 
+def read_input(filename):
+    file_input = []
+    f = open(filename, 'r')
+    lines = f.readlines()
+    for line in lines:
+        tokens = line.split()
+        file_input += tokens
+    print(file_input)
+    return file_input
 
 if __name__ == '__main__':
     grammar = Grammar.readFromFile('g2.txt')
-    rdp = RDParser(grammar, [
-        '{',
-        'int',
-        'a',
-        ';',
-        'int',
-        'b',
-        ';',
-        'int',
-        'c',
-        ';',
-        'if',
-        '(',
-        'a',
-        '>',
-        'b',
-        ')',
-        '{',
-        'if',
-        '(',
-        'c',
-        '>',
-        'a',
-        ')',
-        '{',
-        'print',
-        '(',
-        'c',
-        ')',
-        ';',
-        '}',
-        'else',
-        '{',
-        'print',
-        '(',
-        'a',
-        ')',
-        ';',
-        '}',
-        '}',
-        'else',
-        '{',
-        'if',
-        '(',
-        'c',
-        '>',
-        'b',
-        ')',
-        '{',
-        'print',
-        '(',
-        'c',
-        ')',
-        ';',
-        '}',
-        'else',
-        '{',
-        'print',
-        '(',
-        'b',
-        ')',
-        ';',
-        '}',
-        '}',
-        '}'
-    ])
+    rdp = RDParser(grammar, read_input('input.txt'))
     (isValid, p) = rdp.recursive_descendent()
     print("Sequence is", isValid)
