@@ -12,11 +12,11 @@ if_statement -> if ( relational_expression ) program | if ( relational_expressio
 print_statement -> print ( expression ) ;
 read_statement -> read ( identifier ) ;
 expression -> arithmetic_expression | relational_expression
-arithmetic_expression -> - arithmetic_expression | arithmetic_expression binary_operator a_term | a_term
-a_term -> a_term binary_operator a_factor | a_factor
+arithmetic_expression -> - arithmetic_expression | a_term binary_operator arithmetic_expression | a_term
+a_term -> a_factor binary_operator a_term | a_factor
 a_factor -> ( arithmetic_expression ) | identifier | number
-relational_expression -> ! relational_expression | relational_expression relational_operator r_term | r_term
-r_term -> r_term relational_operator r_factor| r_factor
+relational_expression -> ! relational_expression | r_term relational_operator relational_expression | r_term
+r_term -> r_factor relational_operator r_term | r_factor
 r_factor -> ( relational_expression ) | identifier | boolean_constant
 boolean_constant -> True | False
 type -> int | float | char | string | bool

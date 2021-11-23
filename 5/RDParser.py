@@ -7,70 +7,89 @@ class RDParser:
         self.grammar = grammar
         self.input = w
 
-    def __get_next_prod(self, prod, productions):
+    def get_next_production(self, prod, productions):
         for i in range(len(productions)):
                 if prod == productions[i] and i + 1 < len(productions):
                     return productions[i+1]
         return None
 
-    def recursive_descent_run(self):
-        state = State(self.grammar.start)
-        while state.type != StateType.FINAL and state.type != StateType.ERROR:
-            print(state)
-            if state.type == StateType.NORMAL:
-                if len(state.input_stack) == 0 and state.index == len(self.input):
-                    state.type = StateType.FINAL
-                elif len(state.input_stack) == 0:
-                    state.type = StateType.BACK
-                else:
-                    if state.input_stack[0] in self.grammar.nonterminals:
-                        nonterminal = state.input_stack[0]
-                        first_production = self.grammar.productions[nonterminal][0].split(' ')
-                        state.work_stack.append((nonterminal, first_production))
-                        state.input_stack = first_production + state.input_stack[1:]
-                    else:
-                        if state.index == len(self.input):
-                            state.type = StateType.BACK
-                        elif state.input_stack[0] == StateType.ERROR:
-                            state.work_stack.append((StateType.ERROR, []))
-                            state.input_stack = state.input_stack[1:]
-                        elif state.input_stack[0] == self.input[state.index]:
-                            state.index += 1
-                            state.work_stack.append((state.input_stack[0], []))
-                            state.input_stack = state.input_stack[1:]
-                        else:
-                            state.type = StateType.BACK
-            else:
-                if state.type == StateType.BACK:
-                    if state.work_stack[-1][0] in self.grammar.terminals:
-                        if state.work_stack[-1][0] == StateType.ERROR:
-                            state.work_stack.pop(-1)
-                        else:
-                            state.index -= 1
-                            terminal = state.work_stack.pop(-1)[0]
-                            state.input_stack = [terminal] + state.input_stack
-                    else:
-                        (nonterminal, last_production) = state.work_stack[-1]
-                        productions = self.grammar.productions[nonterminal]
-                        next_prod = self.__get_next_prod(last_production, productions)
-                        if next_prod:
-                            next_prod = next_prod.split(' ')
-                            state.type = StateType.NORMAL
-                            state.work_stack.pop(-1)
-                            state.work_stack.append((nonterminal, next_prod))
-                            state.input_stack = next_prod + state.input_stack[len(last_production):]
-                        elif state.index == 0 and nonterminal == self.grammar.start:
-                            state.type = StateType.ERROR
-                        else:
-                            state.work_stack.pop(-1)
-                            if nonterminal == [StateType.ERROR]:
-                                state.input_stack = [nonterminal] + state.input_stack
-                            else:
-                                state.input_stack = [nonterminal] + state.input_stack[len(last_production):]
+    def expand(self, config):
+        #print(config)
+        nonterminal = config.input_stack[0]
+        first_production = self.grammar.productions[nonterminal][0].split()
+        config.work_stack.append((nonterminal, 0))
+        config.input_stack = first_production + config.input_stack[1:]
+        #print(config)
 
-        if state.type == StateType.ERROR:
+    def advance(self, config):
+        #print(config)
+        terminal = config.input_stack[0]
+        config.index += 1
+        config.work_stack.append(terminal)
+        config.input_stack = config.input_stack[1:]
+        #print(config)
+
+    def momentary_insuccess(self, config):
+        config.type = StateType.BACK
+
+    def back(self, config):
+        #print(config)
+        terminal = config.work_stack[-1]
+        config.index -= 1
+        config.work_stack.pop()
+        config.input_stack = [terminal] + config.input_stack
+        #print(config)
+
+    def another_try(self, config):
+        #print(config)
+        (nonterminal, last_production_index) = config.work_stack.pop()
+        last_production = self.grammar.productions[nonterminal][last_production_index]
+        len_last_production = len(last_production.split())
+        next_production = self.get_next_production(last_production, self.grammar.productions[nonterminal])
+        if next_production:
+            config.type = StateType.NORMAL
+            config.work_stack.append((nonterminal, last_production_index + 1))
+            next_production = next_production.split()
+            config.input_stack = next_production + config.input_stack[len_last_production:]
+        elif config.index == 0 and nonterminal == self.grammar.start:
+            config.type = StateType.ERROR
+        else:
+            config.input_stack = [nonterminal] + config.input_stack[len_last_production:]
+        #print(config)
+
+    def success(self, config):
+        config.type = StateType.FINAL
+
+    def build_string_of_productions(self, work_stack):
+        pass
+
+    def recursive_descendent(self):
+        config = State(self.grammar.start)
+        while config.type != StateType.FINAL and config.type != StateType.ERROR:
+            #print(config)
+            if config.type == StateType.NORMAL:
+                if config.index == len(self.input) and len(config.input_stack) == 0:
+                    self.success(config)
+                else:
+                    if config.input_stack[0] in self.grammar.nonterminals:
+                        self.expand(config)
+                    else:
+                        if config.input_stack[0] == self.input[config.index]:
+                            self.advance(config)
+                        else:
+                            self.momentary_insuccess(config)
+            else:
+                if config.type == StateType.BACK:
+                    if config.work_stack[-1] in self.grammar.terminals:
+                        self.back(config)
+                    else:
+                        self.another_try(config)
+
+        if config.type == StateType.ERROR:
             return False, []
-        return True
+        else:
+            return True, self.build_string_of_productions(config.work_stack)
+                            
 
 
 if __name__ == '__main__':
@@ -86,21 +105,6 @@ if __name__ == '__main__':
         'int',
         'c',
         ';',
-        'read',
-        '(',
-        'a',
-        ')',
-        ';',
-        'read',
-        '(',
-        'b',
-        ')',
-        ';',
-        'read',
-        '(',
-        'c',
-        ')',
-        ';',
         'if',
         '(',
         'a',
@@ -108,12 +112,53 @@ if __name__ == '__main__':
         'b',
         ')',
         '{',
+        'if',
+        '(',
+        'c',
+        '>',
+        'a',
+        ')',
+        '{',
+        'print',
+        '(',
+        'c',
+        ')',
+        ';',
+        '}',
+        'else',
+        '{',
         'print',
         '(',
         'a',
         ')',
+        ';',
+        '}',
+        '}',
+        'else',
+        '{',
+        'if',
+        '(',
+        'c',
+        '>',
+        'b',
+        ')',
+        '{',
+        'print',
+        '(',
+        'c',
+        ')',
+        ';',
+        '}',
+        'else',
+        '{',
+        'print',
+        '(',
+        'b',
+        ')',
+        ';',
+        '}',
         '}',
         '}'
     ])
-    isValid = rdp.recursive_descent_run()
+    (isValid, p) = rdp.recursive_descendent()
     print("Sequence is", isValid)
