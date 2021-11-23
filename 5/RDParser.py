@@ -60,8 +60,20 @@ class RDParser:
     def success(self, config):
         config.type = StateType.FINAL
 
-    def build_string_of_productions(self, work_stack):
-        pass
+    def construct_parse_tree(self, workStack):
+        currentIndex = 1
+        firstNode = TreeNode(currentIndex, self.grammar.start, 0, 0)
+        treeNodes = [firstNode]
+        for elem in workStack:
+            if type(elem) is tuple and elem[0] in self.grammar.nonterminals:
+                for symbol in range(len(elem[1])):
+                    rightSibling = 0
+                    if symbol > 0:
+                        rightSibling = treeNodes[-1].index
+                    treeNodes.append(TreeNode(len(treeNodes) + 1, elem[1][symbol], currentIndex, rightSibling))
+            currentIndex += 1
+
+        self.tree = [node.toList() for node in treeNodes]
 
     def recursive_descendent(self):
         config = State(self.grammar.start)
@@ -88,7 +100,7 @@ class RDParser:
         if config.type == StateType.ERROR:
             return False, []
         else:
-            return True, self.build_string_of_productions(config.work_stack)
+            return True, self.construct_parse_tree(config.work_stack)
                             
 
 def read_input(filename):
@@ -102,7 +114,13 @@ def read_input(filename):
     return file_input
 
 if __name__ == '__main__':
-    grammar = Grammar.readFromFile('g2.txt')
-    rdp = RDParser(grammar, read_input('input.txt'))
-    (isValid, p) = rdp.recursive_descendent()
-    print("Sequence is", isValid)
+    grammar = Grammar.readFromFile('g1.txt')
+    #rdp = RDParser(grammar, read_input('input.txt'))
+    rdp = RDParser(grammar, list("aacbc"))
+    isValid, seq = rdp.recursive_descendent()
+
+    if isValid:
+        print("Sequence is valid")
+        print(tabulate(rdp.tree, numalign='center', tablefmt="pretty", headers=['Index', 'Info', 'Parent', 'Right Sibling']))
+    else:
+        print("Sequence is not valid")
