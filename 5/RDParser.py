@@ -1,6 +1,7 @@
 from State import State, StateType
 from grammar import Grammar
-
+from tree import TreeNode
+from tabulate import tabulate
 
 class RDParser:
     def __init__(self, grammar, w):
@@ -65,6 +66,10 @@ class RDParser:
         firstNode = TreeNode(currentIndex, self.grammar.start, 0, 0)
         treeNodes = [firstNode]
         for elem in workStack:
+            if elem[0] not in self.grammar.productions:
+                currentIndex += 1
+                continue
+            elem = (elem[0], self.grammar.productions[elem[0]][elem[1]].split())
             if type(elem) is tuple and elem[0] in self.grammar.nonterminals:
                 for symbol in range(len(elem[1])):
                     rightSibling = 0
@@ -86,7 +91,7 @@ class RDParser:
                     if config.input_stack[0] in self.grammar.nonterminals:
                         self.expand(config)
                     else:
-                        if config.input_stack[0] == self.input[config.index]:
+                        if config.index < len(self.input) and config.input_stack[0] == self.input[config.index]:
                             self.advance(config)
                         else:
                             self.momentary_insuccess(config)
@@ -110,17 +115,18 @@ def read_input(filename):
     for line in lines:
         tokens = line.split()
         file_input += tokens
-    print(file_input)
+    #print(file_input)
     return file_input
 
 if __name__ == '__main__':
-    grammar = Grammar.readFromFile('g1.txt')
-    #rdp = RDParser(grammar, read_input('input.txt'))
-    rdp = RDParser(grammar, list("aacbc"))
+    #grammar = Grammar.readFromFile('g1.txt')
+    #rdp = RDParser(grammar, list("aacbc"))
+    grammar = Grammar.readFromFile('g2.txt')
+    rdp = RDParser(grammar, read_input('input.txt'))
     isValid, seq = rdp.recursive_descendent()
 
     if isValid:
         print("Sequence is valid")
-        print(tabulate(rdp.tree, numalign='center', tablefmt="pretty", headers=['Index', 'Info', 'Parent', 'Right Sibling']))
+        print(tabulate(rdp.tree, numalign='center', tablefmt="pretty", headers=['Index', 'Info', 'Parent', 'Left Sibling']))
     else:
         print("Sequence is not valid")

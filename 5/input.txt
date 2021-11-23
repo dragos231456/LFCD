@@ -1,17 +1,25 @@
 {
-  int 2 x ;
-  int i ;
-  i = 2 ;
+  int a ;
+  int b ;
+  int c ;
+  read ( a ) ;
+  read ( b ) ;
+  read ( c ) ;
 
-  while(i<x) {
-   if(x%i==0){
-	print("not Prime');
-	i=x;
-        }
-    i=i+1;
-
-    if(i==x) {
-	print("Prime");
-    }
+  if ( a > b ) {
+       	  if ( c > a ) {
+		  print ( c ) ;
+          }
+	  else {
+            print ( a ) ;
+ 	  }
+  }
+  else {
+	  if ( c > b ) {
+		  print ( c ) ;
+          }
+	  else {
+            print ( b ) ;
+          }
   }
 }
