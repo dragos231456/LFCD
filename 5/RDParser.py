@@ -103,9 +103,10 @@ class RDParser:
                         self.another_try(config)
 
         if config.type == StateType.ERROR:
-            return False, []
+            return False
         else:
-            return True, self.construct_parse_tree(config.work_stack)
+            self.construct_parse_tree(config.work_stack)
+            return True
                             
 
 def read_input(filename):
@@ -123,7 +124,7 @@ if __name__ == '__main__':
     #rdp = RDParser(grammar, list("aacbc"))
     grammar = Grammar.readFromFile('g2.txt')
     rdp = RDParser(grammar, read_input('input.txt'))
-    isValid, seq = rdp.recursive_descendent()
+    isValid = rdp.recursive_descendent()
 
     if isValid:
         print("Sequence is valid")
