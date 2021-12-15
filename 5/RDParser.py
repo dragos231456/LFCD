@@ -107,7 +107,6 @@ class RDParser:
         else:
             self.construct_parse_tree(config.work_stack)
             return True
-                            
 
 def read_input(filename):
     file_input = []
@@ -119,15 +118,28 @@ def read_input(filename):
     #print(file_input)
     return file_input
 
+def read_sequence(filename):
+    l = []
+    f = open(filename, 'r')
+    lines = f.readlines()
+    for line in lines:
+        x = line.split(' ')
+        l.append(x[0])
+    return l
+
 if __name__ == '__main__':
     #grammar = Grammar.readFromFile('g1.txt')
-    #rdp = RDParser(grammar, list("aacbc"))
+    #sequence = read_sequence('seq.txt')
     grammar = Grammar.readFromFile('g2.txt')
-    rdp = RDParser(grammar, read_input('input.txt'))
+    sequence = read_sequence('PIF.out')
+    rdp = RDParser(grammar, sequence)
+
     isValid = rdp.recursive_descendent()
 
+    #out = open('out1.txt', 'w')
+    out = open('out2.txt', 'w')
     if isValid:
         print("Sequence is valid")
-        print(tabulate(rdp.tree, numalign='center', tablefmt="pretty", headers=['Index', 'Info', 'Parent', 'Left Sibling']))
+        out.write(tabulate(rdp.tree, numalign='center', tablefmt="pretty", headers=['Index', 'Info', 'Parent', 'Left Sibling']))
     else:
         print("Sequence is not valid")
